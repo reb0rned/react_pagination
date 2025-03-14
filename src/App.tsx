@@ -3,29 +3,37 @@ import './App.css';
 import { getNumbers } from './utils';
 import { Pagination } from './components/Pagination';
 
-
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const items = getNumbers(1, 42).map(n => `Item ${n}`);
 
 export const App: React.FC = () => {
-  const [itemsPerPage, setItemsPerPage] = useState(5)
-  const [currentPage, setCurrentPage] = useState(0)
+  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [currentPage, setCurrentPage] = useState(0);
 
-  const perPageChangeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setItemsPerPage(+event.target.value)
-    setCurrentPage(0)
-  }
+  const perPageChangeHandler = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    setItemsPerPage(+event.target.value);
+    setCurrentPage(0);
+  };
 
-  const visibleItems = items.slice( currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
-  const itemsPerPageFrom = (currentPage * itemsPerPage) + 1
-  const itemsPerPageTo = Math.min((currentPage + 1) * itemsPerPage, items.length);
+  const visibleItems = items.slice(
+    currentPage * itemsPerPage,
+    (currentPage + 1) * itemsPerPage,
+  );
+  const itemsPerPageFrom = currentPage * itemsPerPage + 1;
+  const itemsPerPageTo = Math.min(
+    (currentPage + 1) * itemsPerPage,
+    items.length,
+  );
 
   return (
     <div className="container">
       <h1>Items with Pagination</h1>
 
       <p className="lead" data-cy="info">
-        Page {currentPage + 1} (items {itemsPerPageFrom} - {itemsPerPageTo} of {items.length})
+        {`Page ${currentPage + 1} (items ${itemsPerPageFrom} -
+          ${itemsPerPageTo} of ${items.length})`}
       </p>
 
       <div className="form-group row">
@@ -36,7 +44,7 @@ export const App: React.FC = () => {
             className="form-control"
             onChange={perPageChangeHandler}
             defaultValue="5"
-            >
+          >
             <option value="3">3</option>
             <option value="5">5</option>
             <option value="10">10</option>
@@ -48,18 +56,19 @@ export const App: React.FC = () => {
           items per page
         </label>
       </div>
-          <Pagination
-          itemsForPage={itemsPerPage}
-          setItemsForPage={setItemsPerPage}
-          allItems={items}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          />
+      <Pagination
+        itemsForPage={itemsPerPage}
+        allItems={items}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      />
       <ul>
         {visibleItems.map(item => {
           return (
-            <li data-cy="item" key={item}>{item}</li>
-          )
+            <li data-cy="item" key={item}>
+              {item}
+            </li>
+          );
         })}
       </ul>
     </div>
